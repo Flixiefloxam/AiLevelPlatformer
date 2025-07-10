@@ -72,7 +72,7 @@ metadata/_edit_group_ = true
 shape = SubResource("RectangleShape2D_8uh7m")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-position = Vector2(496, 533)
+position = Vector2(496, 106)
 script = ExtResource("2_p4erq")
 jumpStretchFactor = 0.2
 metadata/_edit_group_ = true

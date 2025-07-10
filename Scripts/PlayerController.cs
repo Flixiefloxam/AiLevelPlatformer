@@ -9,10 +9,11 @@ public partial class PlayerController : CharacterBody2D
     [Export] public float coyoteTime = 0.1f; //Time in seconds to allow jumping after leaving the ground
 	[Export] public float jumpBufferTime = 0.1f; //Time in seconds to allow jumping after pressing the jump button
     [Export] public float jumpStretchFactor = 0.5f; //Factor to apply to the jump stretch effect (should always be positive)
+    [Export] public float horizontalStretchFactor = 0.3f; //Factor to apply to the horizontal stretch effect (should always be positive)
 
     private Vector2 prevVelocity = Vector2.Zero; //The velocity from the previous frame
     private AnimationPlayer animationPlayer;
-	private bool prevOnFloor = true; //If the player was on the floor last frame
+	private bool wasOnFloor = false; //If the player was on the floor last frame
 	private float timeSinceLastOnFloor = 0.0f; //Time since the player was last on the floor
 	private float jumpBufferTimeCounter = 0.0f; //Time since the jump button was pressed
     private Sprite2D sprite;
@@ -96,6 +97,7 @@ public partial class PlayerController : CharacterBody2D
 		MoveAndSlide();
 		prevVelocity = Velocity;
         ApplySquashAndStretch();
+        wasOnFloor = IsOnFloor();// Has to come after ApplySquashAndStretch and MoveAndSlide to ensure the squash and stretch is applied before checking if the player was on the floor and get the correct velocity values.
     }
 
     private void ApplySquashAndStretch()
@@ -105,10 +107,16 @@ public partial class PlayerController : CharacterBody2D
         float squashX = -stretchY * 0.5f; //invert and reduce for x-axis
 
         //horizontal speed squash
-        float stretchX = Mathf.Clamp(Mathf.Abs(velocity.X) / 300, 0, 0.3f);
+        float stretchX = Mathf.Clamp(Mathf.Abs(velocity.X) / 300, 0, horizontalStretchFactor);
 
         Vector2 targetScale = originalScale + new Vector2(squashX + stretchX, stretchY);
         sprite.Scale = sprite.Scale.Lerp(targetScale, 0.2f); //Smoothly interpolate to the target scale
+
+        // landing squash
+        if (!wasOnFloor && IsOnFloor())
+        {
+            sprite.Scale = new Vector2(originalScale.X * 1.2f, originalScale.Y * 0.8f);
+        }
     }
 
 
