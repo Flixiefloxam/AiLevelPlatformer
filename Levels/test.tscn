@@ -4,9 +4,6 @@
 [ext_resource type="Script" uid="uid://4lmw1egmkt55" path="res://Scripts/PlayerController.cs" id="2_p4erq"]
 [ext_resource type="Texture2D" uid="uid://446xt2qhgryw" path="res://Assets/BlueSquare.png" id="2_uvd1l"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_8uh7m"]
-size = Vector2(32, 32)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p4erq"]
 size = Vector2(32, 32)
 
@@ -15,7 +12,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:scale")
+tracks/0/path = NodePath("StretchTransformNode/Sprite:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -27,7 +24,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:position")
+tracks/1/path = NodePath("StretchTransformNode/Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -42,7 +39,7 @@ resource_name = "jump"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:scale")
+tracks/0/path = NodePath("StretchTransformNode/Sprite:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -58,34 +55,60 @@ _data = {
 &"jump": SubResource("Animation_p4erq")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8uh7m"]
+size = Vector2(32, 32)
+
 [node name="Node2D" type="Node2D"]
-
-[node name="LevelBox" type="Sprite2D" parent="."]
-position = Vector2(494, 549)
-scale = Vector2(18.5938, 1)
-texture = ExtResource("1_cljdu")
-metadata/_edit_group_ = true
-
-[node name="StaticBody2D" type="StaticBody2D" parent="LevelBox"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelBox/StaticBody2D"]
-shape = SubResource("RectangleShape2D_8uh7m")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 position = Vector2(496, 106)
 script = ExtResource("2_p4erq")
-jumpStretchFactor = 0.2
 metadata/_edit_group_ = true
 
-[node name="Sprite" type="Sprite2D" parent="CharacterBody2D"]
+[node name="StretchTransformNode" type="Node2D" parent="CharacterBody2D"]
+
+[node name="Sprite" type="Sprite2D" parent="CharacterBody2D/StretchTransformNode"]
 texture = ExtResource("2_uvd1l")
-offset = Vector2(0, -16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_p4erq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D"]
 libraries = {
 &"": SubResource("AnimationLibrary_afen0")
 }
+
+[node name="Level" type="Node" parent="."]
+
+[node name="LevelBox" type="Sprite2D" parent="Level"]
+position = Vector2(494, 549)
+scale = Vector2(18.5938, 1)
+texture = ExtResource("1_cljdu")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/LevelBox"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/LevelBox/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8uh7m")
+
+[node name="LevelBox2" type="Sprite2D" parent="Level"]
+position = Vector2(959, 461)
+scale = Vector2(10.2656, 1)
+texture = ExtResource("1_cljdu")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/LevelBox2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/LevelBox2/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8uh7m")
+
+[node name="LevelBox3" type="Sprite2D" parent="Level"]
+position = Vector2(714, 356)
+scale = Vector2(3.85158, 1)
+texture = ExtResource("1_cljdu")
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Level/LevelBox3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/LevelBox3/StaticBody2D"]
+shape = SubResource("RectangleShape2D_8uh7m")
