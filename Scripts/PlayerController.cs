@@ -54,7 +54,7 @@ public partial class PlayerController : CharacterBody2D
 
 
         //Applying y-velocity damping/lerping.
-        //velocity.Y = Mathf.Lerp(prevVelocity.Y, velocity.Y, 0.8f);
+        velocity.Y = Mathf.Lerp(prevVelocity.Y, velocity.Y, 0.8f);
 
 		//Add the gravity.
 		if (!IsOnFloor())
@@ -104,7 +104,6 @@ public partial class PlayerController : CharacterBody2D
 		MoveAndSlide();
 		prevVelocity = Velocity;
         ApplySquashAndStretch();
-        //material.SetShaderParameter("velocity", Velocity);
         wasOnFloor = IsOnFloor();// Has to come after ApplySquashAndStretch and MoveAndSlide to ensure the squash and stretch is applied before checking if the player was on the floor and get the correct velocity values.
     }
 
@@ -172,96 +171,6 @@ public partial class PlayerController : CharacterBody2D
         return IsOnFloor() || timeSinceLastOnFloor < coyoteTime;
     }
 
-    /*
-    //applies squash and stretch to the player sprite based on the velocity
-    private void ApplySquashAndStretch2()
-    {
-        Vector2 velocity = Velocity;
-
-        float stretchY = Mathf.Clamp(velocity.Y / 600, -jumpStretchFactor, jumpStretchFactor); //Jump/fall stretch factor
-        float squashX = -stretchY * 0.5f; //invert and reduce for x-axis
-
-        //horizontal speed squash
-        float stretchX = Mathf.Clamp(Mathf.Abs(velocity.X) / 300, 0, horizontalStretchFactor);
-
-        Vector2 targetScale = originalScale + new Vector2(squashX + stretchX, stretchY);
-        sprite.Scale = sprite.Scale.Lerp(targetScale, 0.2f); //Smoothly interpolate to the target scale
-
-        // landing squash
-        if (!wasOnFloor && IsOnFloor())
-        {
-            sprite.Scale = new Vector2(originalScale.X * 1.2f, originalScale.Y * 0.8f);
-        }
-    }
-
-    private void ApplySquashAndStretch3()
-    {
-        Vector2 velocity = Velocity;
-        Vector2 velocityNorm = velocity.Normalized();
-        float speed = velocity.Length();
-
-        // How strong the stretch is
-        float stretchAmount = Mathf.Clamp(speed / 600, 0, 0.3f);
-
-        // Stretch more in the movment direction
-        Vector2 stretchDir = new Vector2(
-            1 + stretchAmount * Mathf.Abs(velocityNorm.X),
-            1 + stretchAmount * Mathf.Abs(velocityNorm.Y)
-        );
-
-        // Inverse squash: if x stretches, y compresses slightly and vice versa
-        float squashCompensation = 1 / Mathf.Sqrt(stretchDir.X * stretchDir.Y); //keep volume consistent
-
-        Vector2 finalScale = new Vector2(
-            originalScale.X * stretchDir.X * squashCompensation,
-            originalScale.Y * stretchDir.Y * squashCompensation
-        );
-
-        // Smoothly interpolate to the target scale
-        sprite.Scale = sprite.Scale.Lerp(finalScale, 0.2f);
-    }
-
-    private void ApplySquashAndStretch4()
-    {
-        Vector2 velocity = Velocity;
-
-        // Avoid zero-length direction
-        if (velocity.Length() < 10f)
-        {
-            stretchTransformNode.Scale = originalScale;
-            return;
-        }
-
-        // Compute motion angle and stretch amount
-        float angle = Mathf.Atan2(velocity.Y, velocity.X);
-
-        float speed = velocity.Length();
-        float stretchAmount = Mathf.Clamp(speed / 600f, minStretchFactor-1f, maxStretchFactor - 1.15f);
-
-        // Compute squash and stretch
-        float scaleAlongMotion = 1f + stretchAmount;
-        float scalePerpendicular = 1f - (stretchAmount * 0.5f);
-
-        // Build stretch matrix
-        // First, reset transform
-        stretchTransformNode.Rotation = 0f;
-        stretchTransformNode.Scale = Vector2.One;
-
-        // Apply rotation
-        stretchTransformNode.Rotation = angle;
-        sprite.Rotation = -stretchTransformNode.Rotation; // prevents the sprite itself from rotating when the stretch transform is rotated
-
-        // Apply scale in rotated space
-        stretchTransformNode.Scale = new Vector2(scaleAlongMotion, scalePerpendicular);
-
-        // Landing squash
-        if (!wasOnFloor && IsOnFloor())
-        {
-            stretchTransformNode.Rotation = 0f;
-            stretchTransformNode.Scale = new Vector2(1.2f, 0.8f);
-        }
-    }
-    */
     private void ApplySquashAndStretch()
     {
         Vector2 velocity = Velocity;
