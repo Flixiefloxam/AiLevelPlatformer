@@ -8,14 +8,11 @@ size = Vector2(32, 32)
 
 [node name="test" type="Node2D"]
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("1_uvd1l")]
-position = Vector2(496, 106)
-
 [node name="Level" type="Node" parent="."]
 
 [node name="LevelBox" type="Sprite2D" parent="Level"]
-position = Vector2(494, 549)
-scale = Vector2(18.5938, 1)
+position = Vector2(371, 549)
+scale = Vector2(198.437, 1)
 texture = ExtResource("1_cljdu")
 metadata/_edit_group_ = true
 
@@ -45,3 +42,6 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Level/LevelBox3/StaticBody2D"]
 shape = SubResource("RectangleShape2D_8uh7m")
+
+[node name="Player" parent="." instance=ExtResource("1_uvd1l")]
+position = Vector2(525, 304)
