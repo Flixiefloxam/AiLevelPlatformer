@@ -21,7 +21,6 @@ public partial class PlayerController : CharacterBody2D
 	private float jumpBufferTimeCounter = 0.0f; //Time since the jump button was pressed
     private Sprite2D sprite;
     private Vector2 originalScale = Vector2.One; //Original scale of the sprite
-    private ShaderMaterial material;
     private Node2D stretchTransformNode; //Node to apply the stretch transform to
 
     public override void _Ready()
@@ -29,7 +28,6 @@ public partial class PlayerController : CharacterBody2D
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         sprite = GetNode<Sprite2D>("StretchTransformNode/Sprite");
         originalScale = sprite.Scale; //Store the original scale of the sprite
-        material = sprite.Material as ShaderMaterial;
         stretchTransformNode = GetNode<Node2D>("StretchTransformNode");
     }
     public override void _PhysicsProcess(double delta)
@@ -103,144 +101,10 @@ public partial class PlayerController : CharacterBody2D
 		Velocity = velocity;
 		MoveAndSlide();
 		prevVelocity = Velocity;
-        ApplySquashAndStretch();
-        wasOnFloor = IsOnFloor();// Has to come after ApplySquashAndStretch and MoveAndSlide to ensure the squash and stretch is applied before checking if the player was on the floor and get the correct velocity values.
-    }
-
-    private void ApplySquashAndStretch1()
-    {
-        Vector2 velocity = Velocity;
-        if (Mathf.Abs(velocity.X) == 0 || Mathf.Abs(velocity.Y) == 0)
-        {
-            float stretchY = Mathf.Clamp(velocity.Y / 600, -jumpStretchFactor, jumpStretchFactor); //Jump/fall stretch factor
-
-            stretchTransformNode.Rotation = 0f;
-            sprite.Rotation = 0f; // Reset rotation to avoid rotation when only vertical movement
-            float squashX = -stretchY * 0.5f; //invert and reduce for x-axis
-
-            //horizontal speed squash
-            float stretchX = Mathf.Clamp(Mathf.Abs(velocity.X) / 300, 0, horizontalStretchFactor);
-
-            Vector2 targetScale = originalScale + new Vector2(squashX + stretchX, stretchY);
-            sprite.Scale = sprite.Scale.Lerp(targetScale, 0.2f); //Smoothly interpolate to the target scale
-        }
-        else
-        {
-            // Avoid zero-length direction
-            if (velocity.Length() < 10f)
-            {
-                stretchTransformNode.Scale = originalScale;
-                return;
-            }
-
-            // Compute motion angle and stretch amount
-            float angle = Mathf.Atan2(velocity.Y, velocity.X);
-
-            float speed = velocity.Length();
-            float stretchAmount = Mathf.Clamp(speed / 600f, minStretchFactor - 1f, maxStretchFactor - 1f);
-
-            // Compute squash and stretch
-            float scaleAlongMotion = 1f + stretchAmount;
-            float scalePerpendicular = 1f - (stretchAmount * 0.5f);
-
-            // Build stretch matrix
-            // First, reset transform
-            stretchTransformNode.Rotation = 0f;
-            stretchTransformNode.Scale = Vector2.One;
-
-            // Apply rotation
-            stretchTransformNode.Rotation = angle;
-            sprite.Rotation = -stretchTransformNode.Rotation; // prevents the sprite itself from rotating when the stretch transform is rotated
-
-            // Apply scale in rotated space
-            stretchTransformNode.Scale = new Vector2(scaleAlongMotion, scalePerpendicular);
-
-            // If sprite is scaled by other half of if else statment then smoothly reset it to original scale
-            sprite.Scale = sprite.Scale.Lerp(originalScale, 0.4f); //Smoothly interpolate to the target scale
-        }
-        // landing squash
-        if (!wasOnFloor && IsOnFloor())
-        {
-            stretchTransformNode.Rotation = sprite.Rotation = 0f;
-            sprite.Scale = new Vector2(originalScale.X * 1.2f, originalScale.Y * 0.8f);
-        }
     }
 
     private bool CanJump()
     {
         return IsOnFloor() || timeSinceLastOnFloor < coyoteTime;
-    }
-
-    private void ApplySquashAndStretch()
-    {
-        Vector2 velocity = Velocity;
-        float speed = velocity.Length();
-        bool isMovingHorizontally = Mathf.Abs(velocity.X) > 0;
-        bool isMovingVertically = Mathf.Abs(velocity.Y) > 0;
-
-        ResetRotation();
-
-        if (!isMovingHorizontally || !isMovingVertically)
-        {
-            ApplyDirectionalStretch(velocity);
-        }
-        else if (speed >= 10f)
-        {
-            ApplyAngularStretch(velocity);
-        }
-        else
-        {
-            ResetStretch();
-            return;
-        }
-
-        ApplyLandingSquash();
-    }
-
-    private void ResetRotation()
-    {
-        stretchTransformNode.Rotation = 0f;
-        sprite.Rotation = 0f;
-    }
-
-    private void ApplyDirectionalStretch(Vector2 velocity)
-    {
-        float stretchY = Mathf.Clamp(velocity.Y / 600f, -jumpStretchFactor, jumpStretchFactor);
-        float squashX = -stretchY * 0.5f; //invert and reduce for x-axis
-        float stretchX = Mathf.Clamp(Mathf.Abs(velocity.X) / 300, 0, horizontalStretchFactor);
-
-        //horizontal and vertical speed squash
-        Vector2 targetScale = originalScale + new Vector2(squashX + stretchX, stretchY);
-        sprite.Scale = sprite.Scale.Lerp(targetScale, 0.2f);
-    }
-
-    private void ApplyAngularStretch(Vector2 velocity)
-    {
-        float angle = Mathf.Atan2(velocity.Y, velocity.X);
-        float speed = velocity.Length();
-        float stretchAmount = Mathf.Clamp(speed / 600f, minStretchFactor - 1f, maxStretchFactor - 1f);
-
-        float scaleAlongMotion = 1f + stretchAmount;
-        float scalePerpendicular = 1f - (stretchAmount * 0.5f);
-
-        stretchTransformNode.Rotation = angle;
-        sprite.Rotation = -angle;
-
-        stretchTransformNode.Scale = new Vector2(scaleAlongMotion, scalePerpendicular);
-        sprite.Scale = sprite.Scale.Lerp(originalScale, 0.4f);
-    }
-
-    private void ResetStretch()
-    {
-        stretchTransformNode.Scale = originalScale;
-    }
-
-    private void ApplyLandingSquash()
-    {
-        if (!wasOnFloor && IsOnFloor())
-        {
-            ResetRotation();
-            sprite.Scale = new Vector2(originalScale.X * 1.2f, originalScale.Y * 0.8f);
-        }
     }
 }

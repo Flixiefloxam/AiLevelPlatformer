@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://ciiic2uvdpc71"]
+[gd_scene load_steps=8 format=3 uid="uid://ciiic2uvdpc71"]
 
 [ext_resource type="Script" uid="uid://4lmw1egmkt55" path="res://Scripts/PlayerController.cs" id="1_n6db0"]
 [ext_resource type="Texture2D" uid="uid://cn2cguv1cyxei" path="res://Assets/Player.png" id="2_n6db0"]
+[ext_resource type="Script" uid="uid://coxnjh3sy5ul0" path="res://Scripts/PlayerAnimator.cs" id="3_yk4ok"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p4erq"]
 size = Vector2(32, 32)
@@ -62,6 +63,7 @@ script = ExtResource("1_n6db0")
 [node name="Sprite" type="Sprite2D" parent="StretchTransformNode"]
 texture_filter = 1
 texture = ExtResource("2_n6db0")
+script = ExtResource("3_yk4ok")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_p4erq")
