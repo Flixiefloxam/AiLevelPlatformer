@@ -106,6 +106,7 @@ public partial class PlayerAnimator : Sprite2D
     private void ResetStretch()
     {
         stretchTransformNode.Scale = originalScale;
+        Scale = originalScale;
     }
 
     private void ApplyLandingSquash()
@@ -113,6 +114,7 @@ public partial class PlayerAnimator : Sprite2D
         if (!wasOnFloor && player.IsOnFloor())
         {
             ResetRotation();
+            ResetStretch();
             Scale = new Vector2(originalScale.X * 1.2f, originalScale.Y * 0.8f);
         }
     }

@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://c564oyrwpw040"]
+
+[ext_resource type="Script" uid="uid://cxq8sckce5ydh" path="res://Scripts/LevelLoader.cs" id="1_xfk1u"]
+[ext_resource type="Texture2D" uid="uid://c8bd7mxopbfr5" path="res://Assets/BlackSquare.png" id="2_eb8r8"]
+[ext_resource type="PackedScene" uid="uid://ciiic2uvdpc71" path="res://Objects/Player.tscn" id="3_y5otw"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eb8r8"]
+resource_name = "block"
+texture = ExtResource("2_eb8r8")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[sub_resource type="TileSet" id="TileSet_xfk1u"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_eb8r8")
+
+[node name="LevelLoader" type="Node2D"]
+script = ExtResource("1_xfk1u")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(-4, 0)
+tile_set = SubResource("TileSet_xfk1u")
+
+[node name="Player" parent="." instance=ExtResource("3_y5otw")]
+position = Vector2(86, -1)
