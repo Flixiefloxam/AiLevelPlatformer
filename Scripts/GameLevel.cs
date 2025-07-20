@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class LevelLoader : Node2D
+public partial class GameLevel : Node2D
 {
 	[Export] private string levelPath = "res://Levels/TrainingLevels/mario-1-1.txt";
 
