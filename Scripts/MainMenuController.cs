@@ -3,13 +3,14 @@ using System;
 
 public partial class MainMenuController : Control
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+    private Node SceneChanger; // Link to the global SceneChanger node
+    public override void _Ready()
+    {
+        SceneChanger = GetNode("/root/SceneChanger");
+    }
+    public void StartButtonPressed()
+    {
+        GD.Print("Start button pressed");
+        SceneChanger.Call("ChangeScene", "res://Levels/Menus/LevelSelect.tscn");
+    }
 }

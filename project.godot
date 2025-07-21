@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="AiLevelPlatformer"
-run/main_scene="res://Levels/test.tscn"
+run/main_scene="uid://gldv2sqbu1w1"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SceneChanger="*res://Objects/SceneChanger.tscn"
 
 [display]
 

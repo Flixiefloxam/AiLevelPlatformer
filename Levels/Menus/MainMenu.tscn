@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://gldv2sqbu1w1"]
 
-[ext_resource type="Script" uid="uid://ddnw76ipvv0yr" path="res://Scripts/MainMenuController.cs" id="1_2k6u6"]
-[ext_resource type="Texture2D" uid="uid://bv2c4haoskrci" path="res://Assets/0wykn8vm.png" id="1_hr4vk"]
-[ext_resource type="FontFile" uid="uid://bllg0dum0g0s" path="res://Assets/GrapeSoda.ttf" id="2_2k6u6"]
+[ext_resource type="Script" uid="uid://ddnw76ipvv0yr" path="res://Scripts/MainMenuController.cs" id="1_bcaeg"]
+[ext_resource type="Texture2D" uid="uid://bv2c4haoskrci" path="res://Assets/0wykn8vm.png" id="2_o7lh2"]
+[ext_resource type="FontFile" uid="uid://bllg0dum0g0s" path="res://Assets/GrapeSoda.ttf" id="3_j8wbb"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_65ows"]
-texture = ExtResource("1_hr4vk")
+texture = ExtResource("2_o7lh2")
 modulate_color = Color(0.513233, 0.513233, 0.513233, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hr4vk"]
@@ -47,7 +47,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_2k6u6")
+script = ExtResource("1_bcaeg")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -73,7 +73,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
 
-[node name="Button" type="Button" parent="VBoxContainer"]
+[node name="StartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -87,7 +87,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_2k6u6")
 theme_override_styles/normal = SubResource("StyleBoxFlat_04b30")
 text = "Start Game"
 
-[node name="Button2" type="Button" parent="VBoxContainer"]
+[node name="OptionsButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -101,7 +101,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_2k6u6")
 theme_override_styles/normal = SubResource("StyleBoxFlat_04b30")
 text = "Options"
 
-[node name="Button3" type="Button" parent="VBoxContainer"]
+[node name="ExitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -113,7 +113,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_hr4vk")
 theme_override_styles/hover = SubResource("StyleBoxFlat_hr4vk")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_2k6u6")
 theme_override_styles/normal = SubResource("StyleBoxFlat_04b30")
-text = "Quit"
+text = "Exit"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -130,8 +130,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_y = 15
-theme_override_fonts/font = ExtResource("2_2k6u6")
+theme_override_fonts/font = ExtResource("3_j8wbb")
 theme_override_font_sizes/font_size = 174
 text = "AI Platformer"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="StartButtonPressed"]
