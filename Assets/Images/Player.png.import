@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://446xt2qhgryw"
-path="res://.godot/imported/BlueSquare.png-493533998582f68a287d174071f9f306.ctex"
+uid="uid://cn2cguv1cyxei"
+path="res://.godot/imported/Player.png-3bb599ebee65b75a2117a3c75655c681.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/BlueSquare.png"
-dest_files=["res://.godot/imported/BlueSquare.png-493533998582f68a287d174071f9f306.ctex"]
+source_file="res://Assets/Images/Player.png"
+dest_files=["res://.godot/imported/Player.png-3bb599ebee65b75a2117a3c75655c681.ctex"]
 
 [params]
 

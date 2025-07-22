@@ -14,6 +14,7 @@ public partial class PlayerAnimator : Sprite2D
     private bool wasOnFloor = false; //If the player was on the floor last frame
     private Vector2 velocity;
 
+    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         player = FindParent("Player") as CharacterBody2D;

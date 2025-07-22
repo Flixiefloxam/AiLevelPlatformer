@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c8bd7mxopbfr5"
-path="res://.godot/imported/BlackSquare.png-6263d6040dbf1b237cc9092b65db300c.ctex"
+path="res://.godot/imported/BlackSquare.png-d4edfda0ca8d50090b309a197c59c363.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/BlackSquare.png"
-dest_files=["res://.godot/imported/BlackSquare.png-6263d6040dbf1b237cc9092b65db300c.ctex"]
+source_file="res://Assets/Images/BlackSquare.png"
+dest_files=["res://.godot/imported/BlackSquare.png-d4edfda0ca8d50090b309a197c59c363.ctex"]
 
 [params]
 

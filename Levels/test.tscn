@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://1jbwd1aj146x"]
 
-[ext_resource type="Texture2D" uid="uid://c8bd7mxopbfr5" path="res://Assets/BlackSquare.png" id="1_cljdu"]
+[ext_resource type="Texture2D" uid="uid://c8bd7mxopbfr5" path="res://Assets/Images/BlackSquare.png" id="1_cljdu"]
 [ext_resource type="PackedScene" uid="uid://ciiic2uvdpc71" path="res://Objects/Player.tscn" id="1_uvd1l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8uh7m"]

@@ -18,7 +18,8 @@ public partial class GameLevel : Node2D
         { 'Q', 0 }
     };
 
-	public override void _Ready()
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
 		tileMapLayer = GetNode<TileMapLayer>("TileMapLayer");
         LoadLevelFromFile(levelPath);
@@ -26,7 +27,7 @@ public partial class GameLevel : Node2D
 
 	private void LoadLevelFromFile(string path)
 	{
-		var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+		using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 		if (file == null)
 		{
 			GD.PrintErr("Failed to open level file: " + path);
@@ -37,12 +38,6 @@ public partial class GameLevel : Node2D
         var lines = new List<string>();
 		while (!file.EofReached())
 			lines.Add(file.GetLine());
-
-		file.Close();
-
-        GD.Print("Total lines loaded: " + lines.Count);
-        foreach (var line in lines)
-            GD.Print(line);
 
         tileMapLayer.Clear(); // Clear existing tiles
         for (int y = 0; y < lines.Count; y++)

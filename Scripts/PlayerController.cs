@@ -15,7 +15,6 @@ public partial class PlayerController : CharacterBody2D
 
 
     private Vector2 prevVelocity = Vector2.Zero; //The velocity from the previous frame
-    private AnimationPlayer animationPlayer;
 	private bool wasOnFloor = false; //If the player was on the floor last frame
 	private float timeSinceLastOnFloor = 0.0f; //Time since the player was last on the floor
 	private float jumpBufferTimeCounter = 0.0f; //Time since the jump button was pressed
@@ -23,9 +22,9 @@ public partial class PlayerController : CharacterBody2D
     private Vector2 originalScale = Vector2.One; //Original scale of the sprite
     private Node2D stretchTransformNode; //Node to apply the stretch transform to
 
+    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         sprite = GetNode<Sprite2D>("StretchTransformNode/Sprite");
         originalScale = sprite.Scale; //Store the original scale of the sprite
         stretchTransformNode = GetNode<Node2D>("StretchTransformNode");
