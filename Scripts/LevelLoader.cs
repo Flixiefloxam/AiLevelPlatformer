@@ -2,11 +2,10 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class GameLevel : Node2D
+public partial class LevelLoader : Node2D
 {
-	[Export] private string levelPath = "res://Levels/TrainingLevels/mario-1-1.txt";
-
-	private TileMapLayer tileMapLayer;
+	private bool levelLoaded = false; // Flag to check if the level was loaded correctly
+    private TileMapLayer tileMapLayer;
 	private Dictionary<char, int> tileMapping = new()
 	{
 		{ 'X', 0 }, // Solid tile
@@ -22,10 +21,9 @@ public partial class GameLevel : Node2D
     public override void _Ready()
 	{
 		tileMapLayer = GetNode<TileMapLayer>("TileMapLayer");
-        LoadLevelFromFile(levelPath);
     }
 
-	private void LoadLevelFromFile(string path)
+	public void LoadLevelFromFile(string path)
 	{
 		using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 		if (file == null)
@@ -33,7 +31,8 @@ public partial class GameLevel : Node2D
 			GD.PrintErr("Failed to open level file: " + path);
 			return;
         }
-		GD.Print("Loading level from file: " + path);
+        levelLoaded = true; // Set the flag to true when the level is loaded
+        GD.Print("Loading level from file: " + path);
 
         var lines = new List<string>();
 		while (!file.EofReached())
@@ -51,6 +50,15 @@ public partial class GameLevel : Node2D
 					tileMapLayer.SetCell(new Vector2I(x, y), tileId, new Vector2I(0,0), 0);
 				}
             }
+        }
+    }
+
+    // Called deffered after start to check if the scene was loaded correctly through the SceneChanger's LoadLevelFromFile method.
+    private void IsLevelLoadedCorrectly()
+	{
+        if (!levelLoaded)
+        {
+            GD.PrintErr("LevelLoader scene not loaded correctly through SceneChanger or failed to find level.");
         }
     }
 }

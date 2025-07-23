@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0lhlebp2w0jc"]
+
+[ext_resource type="Script" uid="uid://bboautm8nbnc4" path="res://Scripts/CommandLine.cs" id="1_3co08"]
+
+[node name="CommandLine" type="CanvasLayer"]
+layer = 101
+script = ExtResource("1_3co08")
+
+[node name="CommandLineInput" type="LineEdit" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -92.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Enter Command:"
+keep_editing_on_text_submit = true
+emoji_menu_enabled = false
+
+[connection signal="text_submitted" from="CommandLineInput" to="." method="CommandEntered"]

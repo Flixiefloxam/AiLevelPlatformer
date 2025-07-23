@@ -1,12 +1,14 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 public partial class SceneChanger : CanvasLayer
 {
 	private string newScenePath;
 	private AnimationPlayer animationPlayer;
 	private Stack<string> sceneHistory = new Stack<string>(); // Stack to keep track of scene history. Does not include current scene.
+    private string levelLoadScenePath = "res://Levels/LevelLoader.tscn"; // The path to the LevelLoader scene
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -14,27 +16,46 @@ public partial class SceneChanger : CanvasLayer
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     }
 
+    public bool LoadLevelFromFile(string path)
+    {
+        if (Godot.FileAccess.FileExists(path)&& path.EndsWith(".txt"))
+        {
+            ChangeScene(levelLoadScenePath);
+            var levelLoader = GetNode<LevelLoader>("/root/LevelLoader");
+            levelLoader.LoadLevelFromFile(path);
+            return true; // Return true to indicate the level was loaded successfully
+        }
+        else return false; // Return false if the file does not exist
+    }
+
     // Wrapper function to change the scene with history tracking enabled.
-    public void ChangeScene(string scenePath)
+    public bool ChangeScene(string scenePath)
 	{
-        ChangeScene(scenePath, true);
+        return ChangeScene(scenePath, true);
     }
 
     // Called to change the scene
-    private void ChangeScene(string scenePath, bool addToHistory = false)
+    private bool ChangeScene(string scenePath, bool addToHistory = false)
     {
+        if (!ResourceLoader.Exists(scenePath) && scenePath.EndsWith(".tscn"))
+        {
+            GD.PrintErr("Scene does not exist: " + scenePath);
+            return false;
+        }
+
         if (addToHistory)
         {
             sceneHistory.Push(GetTree().CurrentScene.SceneFilePath); // Push the current scene onto the stack
         }
         newScenePath = scenePath;
-        GD.Print("Changing scene to: " + newScenePath);
+        GD.Print("Changing scene to: " + Path.GetFileNameWithoutExtension(newScenePath));
 
         if (animationPlayer.IsPlaying())
         {
-            return; // If an animation is already playing, do not change scene
+            return false; // If an animation is already playing, do not change scene
         }
         animationPlayer.Play("FadeInOut");
+        return true; // Return true to indicate the scene change was initiated
     }
 
     // Called to go back to the previous scene in the stack.
