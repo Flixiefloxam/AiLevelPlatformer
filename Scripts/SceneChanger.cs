@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 public partial class SceneChanger : CanvasLayer
 {
@@ -9,6 +10,7 @@ public partial class SceneChanger : CanvasLayer
 	private AnimationPlayer animationPlayer;
 	private Stack<string> sceneHistory = new Stack<string>(); // Stack to keep track of scene history. Does not include current scene.
     private string levelLoadScenePath = "res://Levels/LevelLoader.tscn"; // The path to the LevelLoader scene
+    private TaskCompletionSource<bool> sceneChanged;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -16,16 +18,21 @@ public partial class SceneChanger : CanvasLayer
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     }
 
-    public bool LoadLevelFromFile(string path)
+    public async void LoadLevelFromFile(string path)
     {
         if (Godot.FileAccess.FileExists(path)&& path.EndsWith(".txt"))
         {
             ChangeScene(levelLoadScenePath);
+            await sceneChanged.Task; // Wait for the level to be loaded
+            GD.Print("Await recieved");
             var levelLoader = GetNode<LevelLoader>("/root/LevelLoader");
+            GD.Print(GetTree().CurrentScene.Name);
             levelLoader.LoadLevelFromFile(path);
-            return true; // Return true to indicate the level was loaded successfully
         }
-        else return false; // Return false if the file does not exist
+        else
+        {
+            GD.PrintErr("Level file does not exist or is not a valid .txt file: " + path);
+        }
     }
 
     // Wrapper function to change the scene with history tracking enabled.
@@ -42,6 +49,8 @@ public partial class SceneChanger : CanvasLayer
             GD.PrintErr("Scene does not exist: " + scenePath);
             return false;
         }
+
+        sceneChanged = new TaskCompletionSource<bool>();
 
         if (addToHistory)
         {
@@ -79,8 +88,11 @@ public partial class SceneChanger : CanvasLayer
     }
 
     // Called only by new scene so that the scene change can be deffered
-	private void ChangeSceneToFile(string path)
+	private async void ChangeSceneToFile(string path)
 	{
 		GetTree().ChangeSceneToFile(path);
+        await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame); // Wait for the next frame so the scene is fully loaded
+        sceneChanged?.SetResult(true); // Set the result of the TaskCompletionSource to true
+        GD.Print("Await sent");
     }
 }

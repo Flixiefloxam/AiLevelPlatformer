@@ -10,5 +10,5 @@ S---------------------------?-------------E-EE-----------------S-S------------[]
 S---------------------SSSSSS??SSSSSSSSSSSSSSSSSS--QQ--QQQ---------S------E--SS[]SS---E----E----------------<>------XXX-SSSS----------------E--<>-----------------??SSSSSSSSS----XX--[]-----
 S---------------------SSSSS---SSSSSSSSSSSSSSSSSS------------------------<>----[]----<>---<>-------------XX-[]--XXX------------------E-----<>--[]----------XX-------------------XXX--[]---SS
 S---------------------SSSSS---SSSSSSSSSSSSSSSSSS------------------------[]----[]----[]---[]------------XXX-[]--XXX-----------------<>-----[]--[]---------XXXXXX---------------XXXX--[]---SS
-S--------------------------oooSSSSSSSSSSSSSSSSSS------------------------[]-E--[]----[]---[]--------E-E-XXX-[]--XXX-----------------[]---E-[]--[]--------XXXX------------EE---XXXXX--[]---SS
+S---a----------------------oooSSSSSSSSSSSSSSSSSS------------------------[]-E--[]----[]---[]--------E-E-XXX-[]--XXX-----------------[]---E-[]--[]--------XXXX------------EE---XXXXX--[]---SS
 XXXXXXXXXXX--XX--X---XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX------XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX--XX--XX------XXXX------XXXXXXXXXXXXXXX--XXXXXXXXX-----XXXXXXXXXXXXXXXXXXXXXXX--XX

@@ -42,12 +42,21 @@ public partial class LevelSelectMenu : Control
         PopulateList(levelList, TrainingLevelsDir);
         QueueAnimation("OpenLevelLoadMenu");
     }
+
     private void GenerateLevelButtonPressed()
     {
         QueueAnimation("CloseStartMenu");
         aiList.Clear();
         PopulateList(aiList, AiGeneratorsDir);
         QueueAnimation("OpenLevelGenerateMenu");
+    }
+
+    private void LevelSelected(int index, Vector2 atPosition, int mouseButtonIndex)
+    {
+        if (mouseButtonIndex == 1)
+        {
+            SceneChanger.LoadLevelFromFile(TrainingLevelsDir + levelList.GetItemText(index) + ".txt");
+        }
     }
 
     private void BackButtonPressed()

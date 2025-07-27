@@ -53,7 +53,7 @@ public partial class CommandLine : CanvasLayer
             case "loadpath":
                 if (words.Length == 2)
                 {
-                    correctCommand = sceneChanger.LoadLevelFromFile(words[1]);
+                    sceneChanger.LoadLevelFromFile(words[1]);
                 }
                 else correctCommand = false;
                 break;
