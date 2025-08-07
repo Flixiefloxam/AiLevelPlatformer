@@ -490,4 +490,5 @@ speed_scale = 2.0
 [connection signal="pressed" from="StartMenu/VBoxContainer/LoadLevelButton" to="." method="LoadLevelButtonPressed"]
 [connection signal="pressed" from="StartMenu/VBoxContainer/GenerateLevelButton" to="." method="GenerateLevelButtonPressed"]
 [connection signal="item_clicked" from="LevelLoadMenu/LevelList" to="." method="LevelSelected"]
+[connection signal="item_clicked" from="LevelGenerateMenu/AIList" to="." method="AiSelected"]
 [connection signal="pressed" from="BackButton" to="." method="BackButtonPressed"]

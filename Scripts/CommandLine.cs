@@ -57,6 +57,13 @@ public partial class CommandLine : CanvasLayer
                 }
                 else correctCommand = false;
                 break;
+            case "generate":
+                if (words.Length == 2)
+                {
+                    sceneChanger.GenerateLevelAndLoad(words[1]);
+                }
+                else correctCommand = false;
+                break;
             default:
                 correctCommand = false;
                 break;

@@ -74,7 +74,7 @@ class MarkovLevelGenerator:
     
 # Loading the level data from text files
 script_dir = Path(__file__).parent# Get the directory of the current script
-level_dir = script_dir.parent / "Levels" / "TrainingLevels"# Get the path to the training data directory
+level_dir = script_dir.parent.parent / "Levels" / "TrainingLevels"# Get the path to the training data directory assuming the script is in "res://Scripts/LevelGenerators/" and the levels are in "res://Levels/TrainingLevels/"
 level_paths = list(level_dir.glob("*.txt"))# Get all text files in the directory
 raw_levels = [load_levels_from_txt(p) for p in level_paths]# Load the raw levels
 max_width, max_height = get_max_dimensions(raw_levels)# Get the maximum dimensions of the levels
@@ -92,9 +92,9 @@ new_level = generator.generate_level(max_width, max_height)
 print_level(new_level)
 
 # Saving the generated level
-output_dir = script_dir.parent / "Levels" / "GeneratedLevels"
+output_dir = script_dir.parent.parent / "Levels" / "GeneratedLevels"
 output_dir.mkdir(parents=True, exist_ok=True)  # Ensure the output directory exists
 
-output_dir = output_dir / 'generated_level.txt'
+output_dir = output_dir / 'GeneratedLevel.txt'
 print(f"Saving generated level to {output_dir}")
 save_level_to_file(new_level, output_dir)

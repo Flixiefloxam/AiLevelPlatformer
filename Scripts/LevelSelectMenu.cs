@@ -17,6 +17,9 @@ public partial class LevelSelectMenu : Control
     private ItemList aiList; // The list of ai's that you can select from to generate a level
     private AnimationPlayer animationPlayer; // The animation player for the level select menu
     private SceneChanger SceneChanger; // The scene changer node to change scenes when a level is selected
+    private bool isLoadingLevel; // Flag to prevent multiple level loads at the same time
+    private List<string> levelFiles; // List to store the level files in the training levels directory
+    private List<string> aiFiles; // List to store the AI generator files in the AI generators directory
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -28,34 +31,56 @@ public partial class LevelSelectMenu : Control
         aiList = levelGenerateMenu.GetNode<ItemList>("AIList");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         SceneChanger = GetNode<SceneChanger>("/root/SceneChanger");
+        levelFiles = new List<string>(); // Initialize the list to store level files
+        aiFiles = new List<string>(); // Initialize the list to store AI generator files
 
+        // Initialize menu visibility and positions
         startMenu.Visible = true;
         startMenu.Position = new Vector2(0, 0);
         levelLoadMenu.Visible = false;
         levelGenerateMenu.Visible = false;
+
+        isLoadingLevel = false; // Initialize the flag to false
     }
 
     private void LoadLevelButtonPressed()
     {
         QueueAnimation("CloseStartMenu");
-        levelList.Clear();
-        PopulateList(levelList, TrainingLevelsDir);
+        PopulateList(levelList, TrainingLevelsDir, levelFiles);
         QueueAnimation("OpenLevelLoadMenu");
     }
 
     private void GenerateLevelButtonPressed()
     {
         QueueAnimation("CloseStartMenu");
-        aiList.Clear();
-        PopulateList(aiList, AiGeneratorsDir);
+        PopulateList(aiList, AiGeneratorsDir, aiFiles);
         QueueAnimation("OpenLevelGenerateMenu");
     }
 
+    //This runs when a level is selected from the list of levels
     private void LevelSelected(int index, Vector2 atPosition, int mouseButtonIndex)
     {
         if (mouseButtonIndex == 1)
         {
-            SceneChanger.LoadLevelFromFile(TrainingLevelsDir + levelList.GetItemText(index) + ".txt");
+            if (isLoadingLevel == false)
+            {
+                isLoadingLevel = true; // Set the flag to prevent multiple loads
+                SceneChanger.LoadLevelFromFile(TrainingLevelsDir + levelFiles[index]);
+            }
+        }
+    }
+
+    //This runs when an ai is selected from the list of ais
+    private void AiSelected(int index, Vector2 atPosition, int mouseButtonIndex)
+    {
+        if (mouseButtonIndex == 1)
+        {
+            if (isLoadingLevel == false)
+            {
+                isLoadingLevel = true; // Set the flag to prevent multiple loads
+                string dir = AiGeneratorsDir.Replace("res://", ""); // remove the the godot resource path prefix
+                SceneChanger.GenerateLevelAndLoad(dir + aiFiles[index]);
+            }
         }
     }
 
@@ -83,13 +108,16 @@ public partial class LevelSelectMenu : Control
         return Regex.Replace(fileName, @"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " "); // Add a space before each uppercase letter that is not at the start of the string or part of an acronym
     }
 
-    private void PopulateList(ItemList list, string dir)
+    private void PopulateList(ItemList list, string dir, List<string> nameList)
     {
+        list.Clear(); // Clear the list before populating it
+        nameList.Clear(); // Clear the provided nameList to ensure it starts fresh
         List<string> files = GetFilesInDir(dir);
 
         foreach (string fileName in files)
         {
-            list.AddItem(CleanFileName(fileName));
+            nameList.Add(fileName); // Add the raw file name to the provided nameList
+            list.AddItem(CleanFileName(fileName)); // Add the cleaned file name to the displayed list on the UI
         }
     }
 

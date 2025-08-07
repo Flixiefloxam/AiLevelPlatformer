@@ -1,15 +1,18 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
 public partial class SceneChanger : CanvasLayer
 {
-	private string newScenePath;
+    private const string levelLoadScenePath = "res://Levels/LevelLoader.tscn"; // The path to the LevelLoader scene
+    private const string GeneratedLevelPath = "res://Levels/GeneratedLevels/GeneratedLevel.txt"; // The path to the generated level file
+
+    private string newScenePath;
 	private AnimationPlayer animationPlayer;
 	private Stack<string> sceneHistory = new Stack<string>(); // Stack to keep track of scene history. Does not include current scene.
-    private string levelLoadScenePath = "res://Levels/LevelLoader.tscn"; // The path to the LevelLoader scene
     private TaskCompletionSource<bool> sceneChanged;
 
     // Called when the node enters the scene tree for the first time.
@@ -33,6 +36,40 @@ public partial class SceneChanger : CanvasLayer
         {
             GD.PrintErr("Level file does not exist or is not a valid .txt file: " + path);
         }
+    }
+
+    public async void GenerateLevelAndLoad(string path)
+    {
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "python",
+                Arguments = $"\"{path}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+
+        process.Start();
+
+        // Read the output and error streams asynchronously for debugging
+        string stdout = await process.StandardOutput.ReadToEndAsync();
+        string stderr = await process.StandardError.ReadToEndAsync();
+
+        await process.WaitForExitAsync();
+
+        if (process.ExitCode != 0)
+        {
+            GD.PrintErr($"Error generating level with {path}: {stderr}");
+            return;
+        }
+
+        GD.Print($"Level generated successfully with {path}. Output: {stdout}");
+
+        LoadLevelFromFile(GeneratedLevelPath);
     }
 
     // Wrapper function to change the scene with history tracking enabled.
