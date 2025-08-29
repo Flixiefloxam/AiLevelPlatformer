@@ -27,9 +27,7 @@ public partial class SceneChanger : CanvasLayer
         {
             ChangeScene(levelLoadScenePath);
             await sceneChanged.Task; // Wait for the level to be loaded
-            GD.Print("Await recieved");
             var levelLoader = GetNode<LevelLoader>("/root/LevelLoader");
-            GD.Print(GetTree().CurrentScene.Name);
             levelLoader.LoadLevelFromFile(path);
         }
         else
@@ -130,6 +128,5 @@ public partial class SceneChanger : CanvasLayer
 		GetTree().ChangeSceneToFile(path);
         await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame); // Wait for the next frame so the scene is fully loaded
         sceneChanged?.SetResult(true); // Set the result of the TaskCompletionSource to true
-        GD.Print("Await sent");
     }
 }

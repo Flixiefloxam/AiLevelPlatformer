@@ -4,10 +4,15 @@ using System.Collections.Generic;
 
 public partial class LevelLoader : Node2D
 {
-	private bool levelLoaded = false; // Flag to check if the level was loaded correctly
+    public Vector2 playerSpawnPoint;// Where the player should spawn in the level
+
+    private bool levelLoaded = false; // Flag to check if the level was loaded correctly
     private TileMapLayer tileMapLayer;
+    private Vector2I tileSize;
     private const char spawnPointChar = 'a'; // Character representing the spawn point
     private CharacterBody2D player;
+    private PlayerController playerController;
+    private Rect2 tileMapBounds;
     private Dictionary<char, int> tileMapping = new()
 	{
 		{ 'X', 0 }, // Solid tile
@@ -24,9 +29,22 @@ public partial class LevelLoader : Node2D
 	{
 		tileMapLayer = GetNode<TileMapLayer>("TileMapLayer");
         player = GetNode<CharacterBody2D>("Player");
+        playerController = player as PlayerController;
+        playerController.LevelLoader = this; // Set the LevelLoader reference in PlayerController
     }
 
-	public void LoadLevelFromFile(string path)
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
+    {
+        // Check if the player is out of bounds and respawn if necessary
+        if (IsPlayerOutOfBounds())
+        {
+            GD.Print($"Player out of bounds: {player.GlobalPosition}. Respawning...");
+            playerController.Respawn();
+        }
+    }
+
+    public void LoadLevelFromFile(string path)
 	{
 		using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 		if (file == null)
@@ -55,31 +73,53 @@ public partial class LevelLoader : Node2D
                 else if (c == spawnPointChar)
                 {
                     // Set the player's position to the spawn point
-                    player.GlobalPosition = new Vector2(x * tileMapLayer.TileSet.TileSize.X, y * tileMapLayer.TileSet.TileSize.Y);
-                    GD.Print("Player spawn point set at: " + player.GlobalPosition);
+                    playerSpawnPoint = new Vector2(x * tileMapLayer.TileSet.TileSize.X, y * tileMapLayer.TileSet.TileSize.Y);
+                    GD.Print("Player spawn point set at: " + playerSpawnPoint);
+                    playerController.Respawn(true);
                 }
             }
         }
 
+        tileSize = tileMapLayer.TileSet.TileSize; // Get the tile size from the TileSet
+        tileMapBounds = GetTileMapBounds(); // Set the bounds of the tile map
         SetCameraLimits(); // Set camera limits based on the tile map
+    }
+
+    private Rect2 GetTileMapBounds()
+    {
+        Rect2I usedRect = tileMapLayer.GetUsedRect();
+        Rect2 pixelBounds = new Rect2(
+        tileMapLayer.MapToLocal(usedRect.Position),
+        tileMapLayer.MapToLocal(usedRect.Size) - tileMapLayer.MapToLocal(Vector2I.Zero)
+        );
+        return pixelBounds;
+    }
+
+    private bool IsPlayerOutOfBounds()
+    {
+        if (tileMapBounds.Size != Vector2.Zero) // Ensures this only works after the bounds have been defined
+        {
+            Vector2 playerPos = player.GlobalPosition;
+
+            // Expand the bounds by one tile in all directions so the player doesn't instantly respawn when they brush the edge of the level.
+            Rect2 expandedBounds = new Rect2(
+            tileMapBounds.Position - tileSize, 
+            tileMapBounds.Size + (tileSize * 2));
+
+            return !expandedBounds.HasPoint(playerPos);
+        }
+        return false;
     }
 
     // Sets the camera limits based on the tile map's used rect. This ensures the camera does not go out of bounds of the tile map.
     private void SetCameraLimits()
     {
         Camera2D camera = player.GetNode<Camera2D>("Camera2D");
-        Rect2I usedRect = tileMapLayer.GetUsedRect();
-        Vector2I tileSize = tileMapLayer.TileSet.TileSize;
 
-        Rect2 pixelBounds = new Rect2(
-        tileMapLayer.MapToLocal(usedRect.Position),
-        tileMapLayer.MapToLocal(usedRect.Size) - tileMapLayer.MapToLocal(Vector2I.Zero)
-        );
-
-        camera.LimitLeft = (int)pixelBounds.Position.X;
+        camera.LimitLeft = (int)tileMapBounds.Position.X;
         //camera.LimitTop = (int)pixelBounds.Position.Y;
-        camera.LimitRight = (int)(pixelBounds.Position.X + pixelBounds.Size.X - tileSize.X);
-        camera.LimitBottom = (int)(pixelBounds.Position.Y + pixelBounds.Size.Y - tileSize.Y);
+        camera.LimitRight = (int)(tileMapBounds.Position.X + tileMapBounds.Size.X - tileSize.X);
+        camera.LimitBottom = (int)(tileMapBounds.Position.Y + tileMapBounds.Size.Y - tileSize.Y);
     }
 
     // Called deffered after start to check if the scene was loaded correctly through the SceneChanger's LoadLevelFromFile method.

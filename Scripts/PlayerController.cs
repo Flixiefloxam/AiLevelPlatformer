@@ -13,6 +13,7 @@ public partial class PlayerController : CharacterBody2D
     [Export] private float maxStretchFactor = 1.15f;
     [Export] private float minStretchFactor = 0.7f;
 
+    public LevelLoader LevelLoader; //Reference to the LevelLoader node to access the player spawn point
 
     private Vector2 prevVelocity = Vector2.Zero; //The velocity from the previous frame
 	private bool wasOnFloor = false; //If the player was on the floor last frame
@@ -100,6 +101,22 @@ public partial class PlayerController : CharacterBody2D
 		Velocity = velocity;
 		MoveAndSlide();
 		prevVelocity = Velocity;
+    }
+
+    public void Respawn(bool skipAnim = false)
+    {
+        if (LevelLoader != null)
+        {
+            GD.Print("Respawning player at spawn point: " + LevelLoader.playerSpawnPoint);
+            GlobalPosition = LevelLoader.playerSpawnPoint;
+            //Velocity = Vector2.Zero;
+            //timeSinceLastOnFloor = 0.0f;
+            //jumpBufferTimeCounter = 0.0f;
+        }
+        else
+        {
+            GD.PrintErr("LevelLoader is not set in PlayerController. Cannot respawn.");
+        }
     }
 
     private bool CanJump()
