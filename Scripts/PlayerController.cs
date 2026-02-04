@@ -109,7 +109,7 @@ public partial class PlayerController : CharacterBody2D
         {
             GD.Print("Respawning player at spawn point: " + LevelLoader.playerSpawnPoint);
             GlobalPosition = LevelLoader.playerSpawnPoint;
-            //Velocity = Vector2.Zero;
+            Velocity = Vector2.Zero;
             //timeSinceLastOnFloor = 0.0f;
             //jumpBufferTimeCounter = 0.0f;
         }
