@@ -106,7 +106,12 @@ public partial class LevelLoader : Node2D
             tileMapBounds.Position - tileSize, 
             tileMapBounds.Size + (tileSize * 2));
 
-            return !expandedBounds.HasPoint(playerPos);
+            bool isOutOfBounds = 
+                playerPos.X < expandedBounds.Position.X ||
+                playerPos.X > expandedBounds.End.X ||
+                playerPos.Y > expandedBounds.End.Y; // Allow the player to go above the top of the level for things like jumping, but not below the bottom or beyond the sides.
+
+            return isOutOfBounds;
         }
         return false;
     }

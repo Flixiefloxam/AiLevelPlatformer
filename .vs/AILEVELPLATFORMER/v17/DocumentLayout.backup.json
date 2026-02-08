@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|c:\\users\\alals\\documents\\godot\\ailevelplatformer\\scripts\\levelloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|solutionrelative:scripts\\levelloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|c:\\users\\alals\\documents\\godot\\ailevelplatformer\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|solutionrelative:scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|c:\\users\\alals\\documents\\godot\\ailevelplatformer\\scripts\\scenechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|solutionrelative:scripts\\scenechanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|c:\\users\\alals\\documents\\godot\\ailevelplatformer\\scripts\\levelloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F34EAA12-E397-489A-BBEE-79F7A7007112}|AiLevelPlatformer.csproj|solutionrelative:scripts\\levelloader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,7 +38,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MainMenu.cs",
               "DocumentMoniker": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\MainMenu.cs",
               "RelativeDocumentMoniker": "Scripts\\MainMenu.cs",
@@ -50,20 +50,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "PauseMenu.cs",
               "DocumentMoniker": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\PauseMenu.cs",
               "RelativeDocumentMoniker": "Scripts\\PauseMenu.cs",
               "ToolTip": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\PauseMenu.cs",
               "RelativeToolTip": "Scripts\\PauseMenu.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAxwBEAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-01T12:52:38.133Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-01T12:52:38.133Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "SceneChanger.cs",
               "DocumentMoniker": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\SceneChanger.cs",
               "RelativeDocumentMoniker": "Scripts\\SceneChanger.cs",
@@ -75,25 +74,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "LevelLoader.cs",
               "DocumentMoniker": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\LevelLoader.cs",
               "RelativeDocumentMoniker": "Scripts\\LevelLoader.cs",
               "ToolTip": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\LevelLoader.cs",
               "RelativeToolTip": "Scripts\\LevelLoader.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAmwCkAAABWAAAAAAAAAA==",
+              "ViewState": "AgIAAFcAAAAAAAAAAIA1wG0AAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-09T11:46:24.235Z"
+              "WhenOpened": "2025-08-09T11:46:24.235Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\PlayerController.cs",
               "RelativeDocumentMoniker": "Scripts\\PlayerController.cs",
               "ToolTip": "C:\\Users\\alals\\Documents\\Godot\\AiLevelPlatformer\\Scripts\\PlayerController.cs",
               "RelativeToolTip": "Scripts\\PlayerController.cs",
-              "ViewState": "AgIAADYAAAAAAAAAAAAYwE4AAABBAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAYwB0AAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-07T13:27:19.009Z",
               "EditorCaption": ""
