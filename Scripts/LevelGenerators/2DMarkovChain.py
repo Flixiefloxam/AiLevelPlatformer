@@ -39,7 +39,7 @@ def pad_level(level, target_width, target_height, pad_char='-'):
 def print_level(level):
     for row in level:
         print(''.join(row))
-    print()  # Newline for better readability
+    print()
 
 class Markov2DLevelGenerator:
     def __init__(self):
@@ -66,9 +66,9 @@ class Markov2DLevelGenerator:
             for y in range(1, height):
                 for x in range(1, width):
                     context = (
-                        level[y - 1][x - 1],  # top-left
-                        level[y - 1][x],      # top
-                        level[y][x - 1]       # left
+                        level[y - 1][x - 1],
+                        level[y - 1][x],
+                        level[y][x - 1]
                     )
                     self.model[context].append(level[y][x])
 
