@@ -9,6 +9,7 @@ public partial class SceneChanger : CanvasLayer
 {
     private const string levelLoadScenePath = "res://Levels/LevelLoader.tscn"; // The path to the LevelLoader scene
     private const string GeneratedLevelPath = "res://Levels/GeneratedLevels/GeneratedLevel.txt"; // The path to the generated level file
+    private const int MaxLevelGenerationAttempts = 10; // Maximum number of attempts to generate a valid level
 
     private string newScenePath;
 	private AnimationPlayer animationPlayer;
@@ -51,23 +52,86 @@ public partial class SceneChanger : CanvasLayer
             }
         };
 
-        process.Start();
+        string stdout;
+        string stderr;
+        bool validLevel = false;
+        int failedAttempts = 0;
 
-        // Read the output and error streams asynchronously for debugging
-        string stdout = await process.StandardOutput.ReadToEndAsync();
-        string stderr = await process.StandardError.ReadToEndAsync();
-
-        await process.WaitForExitAsync();
-
-        if (process.ExitCode != 0)
+        do
         {
-            GD.PrintErr($"Error generating level with {path}: {stderr}");
-            return;
+            process.Start();
+
+            // Read the output and error streams asynchronously for debugging
+            stdout = await process.StandardOutput.ReadToEndAsync();
+            stderr = await process.StandardError.ReadToEndAsync();
+
+            await process.WaitForExitAsync();
+
+            if (process.ExitCode != 0)
+            {
+                GD.PrintErr($"Error generating level with {path}: {stderr}");
+                return;
+            }
+
+            if (ValidLevelStructure(GeneratedLevelPath))
+            {
+                validLevel = true;
+            }
+            failedAttempts++;
         }
+        while (!validLevel && failedAttempts < MaxLevelGenerationAttempts);
+
+        
 
         GD.Print($"Level generated successfully with {path}. Output: {stdout}");
 
         LoadLevelFromFile(GeneratedLevelPath);
+    }
+
+    private static bool ValidLevelStructure(string path)
+    {
+        using var file = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read);
+        if (file == null)
+        {
+            GD.PrintErr("Failed to open level file: " + path);
+            return false;
+        }
+
+        var lines = new List<string>();
+        while (!file.EofReached())
+            lines.Add(file.GetLine());
+
+        // Structure Validation
+        if (!lines.Contains("a"))
+        {
+            GD.PrintErr("No spawn point found");
+        }
+        else
+        {
+            for (int y = 0; y < lines.Count; y++)
+            {
+                for (int x = 0; x < lines[0].Length; x++)
+                {
+                    if (lines[y][x] == 'a')
+                    {
+                        for (int i = 0; i < lines.Count - y; i++)
+                        {
+                            if (lines[i].Length >= x)
+                            {
+                                if (lines[i][x] != '-')
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            GD.PrintErr("No valid spawn point found (must have a solid tile below it)");
+        }
+            
+
+        return false;
     }
 
     // Wrapper function to change the scene with history tracking enabled.

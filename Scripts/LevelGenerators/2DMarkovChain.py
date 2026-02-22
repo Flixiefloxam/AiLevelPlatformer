@@ -73,6 +73,39 @@ class Markov2DLevelGenerator:
                     self.model[context].append(level[y][x])
 
     
+    # def generate_level(self, width, height, pad_char='-'):
+    #     level = [[pad_char for _ in range(width)] for _ in range(height)]
+
+    #     # ---- Seed first row using 1D Markov ----
+    #     start = random.choice(list(self.first_row_model.keys()))
+    #     level[0][0], level[0][1] = start
+
+    #     for x in range(2, width):
+    #         context = (level[0][x - 2], level[0][x - 1])
+    #         options = self.first_row_model.get(context)
+    #         level[0][x] = random.choice(options) if options else pad_char
+
+    #     # ---- Seed first column using 1D Markov ----
+    #     start = random.choice(list(self.first_col_model.keys()))
+    #     level[0][0], level[1][0] = start
+
+    #     for y in range(2, height):
+    #         context = (level[y - 2][0], level[y - 1][0])
+    #         options = self.first_col_model.get(context)
+    #         level[y][0] = random.choice(options) if options else pad_char
+
+    #     # ---- Fill the rest using 2D Markov ----
+    #     for y in range(1, height):
+    #         for x in range(1, width):
+    #             context = (
+    #                 level[y - 1][x - 1],
+    #                 level[y - 1][x],
+    #                 level[y][x - 1]
+    #             )
+    #             options = self.model.get(context)
+    #             level[y][x] = random.choice(options) if options else pad_char
+
+    #     return level
     def generate_level(self, width, height, pad_char='-'):
         level = [[pad_char for _ in range(width)] for _ in range(height)]
 
@@ -85,11 +118,11 @@ class Markov2DLevelGenerator:
             options = self.first_row_model.get(context)
             level[0][x] = random.choice(options) if options else pad_char
 
-        # ---- Seed first column using 1D Markov ----
+        # ---- Seed first column WITHOUT overwriting (0,0) ----
         start = random.choice(list(self.first_col_model.keys()))
-        level[0][0], level[1][0] = start
+        level[1][0], level[2][0] = start
 
-        for y in range(2, height):
+        for y in range(3, height):
             context = (level[y - 2][0], level[y - 1][0])
             options = self.first_col_model.get(context)
             level[y][0] = random.choice(options) if options else pad_char
@@ -102,10 +135,17 @@ class Markov2DLevelGenerator:
                     level[y - 1][x],
                     level[y][x - 1]
                 )
+
                 options = self.model.get(context)
-                level[y][x] = random.choice(options) if options else pad_char
+
+                if options:
+                    level[y][x] = random.choice(options)
+                else:
+                    # Fallback to left neighbor (more stable than pad_char)
+                    level[y][x] = level[y][x - 1]
 
         return level
+
 
 
     
