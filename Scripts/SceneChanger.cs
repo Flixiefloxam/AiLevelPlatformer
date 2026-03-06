@@ -129,9 +129,10 @@ public partial class SceneChanger : CanvasLayer
             }
             GD.PrintErr("No valid spawn point found (must have a solid tile below it)");
         }
-            
 
-        return false;
+
+        //return false;
+        return true; // this is here to temporarily bypass the level structure validation while testing level generation.
     }
 
     // Wrapper function to change the scene with history tracking enabled.

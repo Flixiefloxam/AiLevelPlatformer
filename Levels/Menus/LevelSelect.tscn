@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://byc7nwii65rfo"]
+[gd_scene load_steps=20 format=3 uid="uid://byc7nwii65rfo"]
 
 [ext_resource type="Texture2D" uid="uid://bv2c4haoskrci" path="res://Assets/Images/0wykn8vm.png" id="1_2ut4v"]
 [ext_resource type="Script" uid="uid://dj5j7cmcmll12" path="res://Scripts/LevelSelectMenu.cs" id="1_vhu46"]
 [ext_resource type="Theme" uid="uid://b4pphfvxdl48y" path="res://Assets/Styles/MenuLabel.tres" id="3_7138c"]
+[ext_resource type="FontFile" uid="uid://bllg0dum0g0s" path="res://Assets/Styles/GrapeSoda.ttf" id="4_2dcsg"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vhu46"]
 texture = ExtResource("1_2ut4v")
@@ -278,6 +279,105 @@ tracks/5/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("LoadingLabel:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(438, 140)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("LoadingLabel:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("BackButton:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BackButton:visible")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_pg7a0"]
+resource_name = "ShowLoadingScreen"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoadingLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(438, -225), Vector2(438, 140)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LoadingLabel:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BackButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -90)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BackButton:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_76pvw"]
 _data = {
@@ -287,7 +387,8 @@ _data = {
 &"OpenLevelGenerateMenu": SubResource("Animation_d5h5y"),
 &"OpenLevelLoadMenu": SubResource("Animation_s80e6"),
 &"OpenStartMenu": SubResource("Animation_76pvw"),
-&"RESET": SubResource("Animation_2dcsg")
+&"RESET": SubResource("Animation_2dcsg"),
+&"ShowLoadingScreen": SubResource("Animation_pg7a0")
 }
 
 [node name="LevelSelect" type="Control"]
@@ -437,10 +538,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -197.0
-offset_top = -141.0
-offset_right = 197.0
-offset_bottom = 481.0
+offset_left = -400.0
+offset_top = -159.0
+offset_right = 400.0
+offset_bottom = 463.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 50
@@ -486,6 +587,27 @@ libraries = {
 &"": SubResource("AnimationLibrary_76pvw")
 }
 speed_scale = 2.0
+
+[node name="LoadingLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -522.0
+offset_top = -400.0
+offset_right = 522.0
+offset_bottom = -225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_y = 15
+theme_override_fonts/font = ExtResource("4_2dcsg")
+theme_override_font_sizes/font_size = 174
+text = "Loading Level..."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="StartMenu/VBoxContainer/LoadLevelButton" to="." method="LoadLevelButtonPressed"]
 [connection signal="pressed" from="StartMenu/VBoxContainer/GenerateLevelButton" to="." method="GenerateLevelButtonPressed"]

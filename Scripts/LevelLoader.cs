@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 
 public partial class LevelLoader : Node2D
 {
@@ -13,6 +14,8 @@ public partial class LevelLoader : Node2D
     private CharacterBody2D player;
     private PlayerController playerController;
     private Rect2 tileMapBounds;
+    private Camera2D playerCamera;
+    private Camera2D sceneCamera;
     private Dictionary<char, int> tileMapping = new()
 	{
 		{ 'X', 0 }, // Solid tile
@@ -31,6 +34,8 @@ public partial class LevelLoader : Node2D
         player = GetNode<CharacterBody2D>("Player");
         playerController = player as PlayerController;
         playerController.LevelLoader = this; // Set the LevelLoader reference in PlayerController
+        playerCamera = player.GetNode<Camera2D>("Camera2D");
+        sceneCamera = GetNode<Camera2D>("SceneCamera");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -83,6 +88,42 @@ public partial class LevelLoader : Node2D
         tileSize = tileMapLayer.TileSet.TileSize; // Get the tile size from the TileSet
         tileMapBounds = GetTileMapBounds(); // Set the bounds of the tile map
         SetCameraLimits(); // Set camera limits based on the tile map
+    }
+
+    public void ToggleSceneCamera()
+    {
+        if (playerCamera.IsCurrent())
+        {
+            // Center and resize the scene camera to fit the entire tile map bounds
+            sceneCamera.Enabled = true;
+            Rect2I usedRect = tileMapLayer.GetUsedRect();
+            Vector2 topLeft = tileMapLayer.MapToLocal(usedRect.Position);
+            Vector2 bottomRight = tileMapLayer.MapToLocal(usedRect.End);
+
+            Vector2 levelSize = bottomRight - topLeft;
+            Vector2 levelCenter = topLeft + levelSize / 2f;
+
+            sceneCamera.Position = levelCenter;
+
+            Vector2 viewportSize = GetViewportRect().Size;
+
+            float zoomX = viewportSize.X / levelSize.X;
+            float zoomY = viewportSize.Y / levelSize.Y;
+
+            float zoom = Mathf.Min(zoomX, zoomY);
+
+            zoom *= 0.99f; // Zoom padding
+
+            sceneCamera.Zoom = new Vector2(zoom, zoom);
+
+
+            sceneCamera.MakeCurrent();
+
+        }
+        else
+        {
+            playerCamera.MakeCurrent();
+        }
     }
 
     private Rect2 GetTileMapBounds()

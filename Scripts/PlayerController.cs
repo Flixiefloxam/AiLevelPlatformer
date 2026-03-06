@@ -22,6 +22,7 @@ public partial class PlayerController : CharacterBody2D
     private Sprite2D sprite;
     private Vector2 originalScale = Vector2.One; //Original scale of the sprite
     private Node2D stretchTransformNode; //Node to apply the stretch transform to
+    private CommandLine commandLine; //Reference to the CommandLine node to check if the console is open
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -29,6 +30,7 @@ public partial class PlayerController : CharacterBody2D
         sprite = GetNode<Sprite2D>("StretchTransformNode/Sprite");
         originalScale = sprite.Scale; //Store the original scale of the sprite
         stretchTransformNode = GetNode<Node2D>("StretchTransformNode");
+        commandLine = GetNode<CommandLine>("/root/CommandLine");
     }
     public override void _PhysicsProcess(double delta)
 	{

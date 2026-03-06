@@ -15,4 +15,10 @@ public partial class MainMenu : Control
         GD.Print("Start button pressed");
         SceneChanger.ChangeScene("res://Levels/Menus/LevelSelect.tscn");
     }
+
+    public void QuitButtonPressed()
+    {
+        GD.Print("Quit button pressed");
+        GetTree().Quit();
+    }
 }

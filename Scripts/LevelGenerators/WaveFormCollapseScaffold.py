@@ -145,6 +145,13 @@ class OverlappingWFC2x2:
         for attempt in range(max_retries):
 
             wave = self.initialize_wave(pattern_width, pattern_height)
+
+            scaffold = create_scaffold_level(tile_width, tile_height)
+            self.constrain_wave_to_scaffold(wave, scaffold)
+
+            if not self.propagate(wave, [(0,0)]):
+                continue
+            
             failed = False
 
             while True:
@@ -196,6 +203,62 @@ class OverlappingWFC2x2:
                 level[y+1][x+1] = p[3]
 
         return level
+    
+    def constrain_wave_to_scaffold(self, wave, scaffold):
+        for y in range(len(wave)):
+            for x in range(len(wave[0])):
+                
+                allowed = set()
+                
+                for p_index in wave[y][x]:
+                    p = self.patterns[p_index]
+                    
+                    # Pattern tiles
+                    a, b, c, d = p
+                    
+                    if (
+                        scaffold[y][x] in ('-', a) and
+                        scaffold[y][x+1] in ('-', b) and
+                        scaffold[y+1][x] in ('-', c) and
+                        scaffold[y+1][x+1] in ('-', d)
+                    ):
+                        allowed.add(p_index)
+                
+                wave[y][x] = allowed
+
+def generate_ground_heights(width, min_height, max_height, max_step=1):
+    heights = []
+    
+    current = random.randint(min_height, max_height)
+    
+    for x in range(width):
+        step = random.randint(-max_step, max_step)
+        current += step
+        current = max(min_height, min(max_height, current))
+        heights.append(current)
+    
+    return heights
+
+def create_scaffold_level(width, height):
+    level = [['-' for _ in range(width)] for _ in range(height)]
+    
+    min_ground = int(height * 0.5)
+    max_ground = int(height * 0.8)
+    
+    ground_heights = generate_ground_heights(width, min_ground, max_ground)
+    
+    for x in range(width):
+        ground_y = ground_heights[x]
+        
+        for y in range(ground_y, height):
+            level[y][x] = 'X'  # solid tile
+    
+    return level
+
+    
+# -------------------------
+# Utility functions
+# -------------------------
 
 def load_levels_from_txt(file_path):
     with open(file_path, 'r') as f:
@@ -213,6 +276,9 @@ def print_level(level):
     print()
 
 
+# -------------------------
+# Load Training Data
+# -------------------------
 
 script_dir = Path(__file__).parent
 level_dir = script_dir.parent.parent / "Levels" / "TrainingLevels"
@@ -225,12 +291,18 @@ if not raw_levels:
     exit()
 
 
+# -------------------------
+# Train Overlapping 2x2 WFC
+# -------------------------
 
 wfc = OverlappingWFC2x2()
 wfc.extract_patterns(raw_levels)
 print("Number of patterns:", len(wfc.patterns))
 wfc.build_compatibility()
 
+# -------------------------
+# Generate Level
+# -------------------------
 
 tile_width = len(raw_levels[0][0])
 tile_height = len(raw_levels[0])
@@ -240,6 +312,9 @@ new_level = wfc.generate(tile_width, tile_height)
 print("Generated Level:\n")
 print_level(new_level)
 
+# -------------------------
+# Save Output
+# -------------------------
 
 output_dir = script_dir.parent.parent / "Levels" / "GeneratedLevels"
 output_dir.mkdir(parents=True, exist_ok=True)

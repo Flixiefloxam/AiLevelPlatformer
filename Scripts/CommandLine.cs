@@ -64,6 +64,12 @@ public partial class CommandLine : CanvasLayer
                 }
                 else correctCommand = false;
                 break;
+            case "camera":
+                if (GetTree().CurrentScene.SceneFilePath == "res://Levels/LevelLoader.tscn")
+                {
+                    GetNode<LevelLoader>("/root/LevelLoader").ToggleSceneCamera();
+                }
+                break;
             default:
                 correctCommand = false;
                 break;

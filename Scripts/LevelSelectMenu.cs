@@ -15,6 +15,7 @@ public partial class LevelSelectMenu : Control
     private Control levelGenerateMenu; // The menu that allows you to select which ai you want to use to generate a level
     private ItemList levelList; // The list of levels that you can select from to load
     private ItemList aiList; // The list of ai's that you can select from to generate a level
+    private Label LoadingLabel; // The "Loading Level..." label that shows when a level is being loaded or generated
     private AnimationPlayer animationPlayer; // The animation player for the level select menu
     private SceneChanger SceneChanger; // The scene changer node to change scenes when a level is selected
     private bool isLoadingLevel; // Flag to prevent multiple level loads at the same time
@@ -29,6 +30,7 @@ public partial class LevelSelectMenu : Control
         levelGenerateMenu = GetNode<Control>("LevelGenerateMenu");
         levelList = levelLoadMenu.GetNode<ItemList>("LevelList");
         aiList = levelGenerateMenu.GetNode<ItemList>("AIList");
+        LoadingLabel = GetNode<Label>("LoadingLabel");
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         SceneChanger = GetNode<SceneChanger>("/root/SceneChanger");
         levelFiles = new List<string>(); // Initialize the list to store level files
@@ -39,6 +41,7 @@ public partial class LevelSelectMenu : Control
         startMenu.Position = new Vector2(0, 0);
         levelLoadMenu.Visible = false;
         levelGenerateMenu.Visible = false;
+        LoadingLabel.Visible = false;
 
         isLoadingLevel = false; // Initialize the flag to false
     }
@@ -78,6 +81,10 @@ public partial class LevelSelectMenu : Control
             if (isLoadingLevel == false)
             {
                 isLoadingLevel = true; // Set the flag to prevent multiple loads
+
+                QueueAnimation("CloseLevelGenerateMenu");
+                QueueAnimation("ShowLoadingScreen");
+
                 string dir = AiGeneratorsDir.Replace("res://", ""); // remove the the godot resource path prefix
                 SceneChanger.GenerateLevelAndLoad(dir + aiFiles[index]);
             }

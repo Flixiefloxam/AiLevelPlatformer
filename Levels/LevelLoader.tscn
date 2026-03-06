@@ -28,3 +28,5 @@ tile_set = SubResource("TileSet_xfk1u")
 position = Vector2(86, -1)
 
 [node name="PauseMenu" parent="." instance=ExtResource("4_sc368")]
+
+[node name="SceneCamera" type="Camera2D" parent="."]
