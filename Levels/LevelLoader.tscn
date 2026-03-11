@@ -1,28 +1,74 @@
-[gd_scene load_steps=7 format=3 uid="uid://c564oyrwpw040"]
+[gd_scene load_steps=9 format=3 uid="uid://c564oyrwpw040"]
 
 [ext_resource type="Script" uid="uid://cxq8sckce5ydh" path="res://Scripts/LevelLoader.cs" id="1_y5otw"]
-[ext_resource type="Texture2D" uid="uid://c8bd7mxopbfr5" path="res://Assets/Images/BlackSquare.png" id="2_sc368"]
 [ext_resource type="PackedScene" uid="uid://ciiic2uvdpc71" path="res://Objects/Player.tscn" id="3_fvyxj"]
 [ext_resource type="PackedScene" uid="uid://c7b13q3n3oea1" path="res://Objects/PauseMenu.tscn" id="4_sc368"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eb8r8"]
-resource_name = "block"
-texture = ExtResource("2_sc368")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
-
-[sub_resource type="TileSet" id="TileSet_xfk1u"]
-tile_size = Vector2i(32, 32)
-physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_eb8r8")
+[ext_resource type="Texture2D" uid="uid://b2l85ce74lwg0" path="res://Assets/Images/BackgroundImages/background1.png" id="6_2aaox"]
+[ext_resource type="TileSet" uid="uid://dxh1ar130rpg" path="res://Assets/TileSets/CaveTileSet.tres" id="6_4xq44"]
+[ext_resource type="Texture2D" uid="uid://navssfpgj7b" path="res://Assets/Images/BackgroundImages/background2.png" id="7_csutv"]
+[ext_resource type="Texture2D" uid="uid://dvvv2w32ro20l" path="res://Assets/Images/BackgroundImages/background3.png" id="8_vrp7v"]
+[ext_resource type="Texture2D" uid="uid://7smklpjxrkbi" path="res://Assets/Images/BackgroundImages/background4a.png" id="9_7ugdn"]
 
 [node name="LevelLoader" type="Node2D"]
 script = ExtResource("1_y5otw")
 
+[node name="ParallaxBackground" type="Node2D" parent="."]
+position = Vector2(0, 227)
+
+[node name="Parallax2D1" type="Parallax2D" parent="ParallaxBackground"]
+z_index = -1
+z_as_relative = false
+scale = Vector2(1.5, 1.5)
+scroll_scale = Vector2(0.1, 0.1)
+scroll_offset = Vector2(0, 43)
+repeat_size = Vector2(960, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D1"]
+texture_filter = 1
+texture = ExtResource("6_2aaox")
+
+[node name="Parallax2D2" type="Parallax2D" parent="ParallaxBackground"]
+z_index = -1
+z_as_relative = false
+scale = Vector2(1.5, 1.5)
+scroll_scale = Vector2(0.3, 0.3)
+scroll_offset = Vector2(0, 43)
+repeat_size = Vector2(960, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D2"]
+texture_filter = 1
+texture = ExtResource("7_csutv")
+
+[node name="Parallax2D3" type="Parallax2D" parent="ParallaxBackground"]
+z_index = -1
+z_as_relative = false
+scale = Vector2(1.5, 1.5)
+scroll_scale = Vector2(0.6, 0.6)
+repeat_size = Vector2(960, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D3"]
+texture_filter = 1
+texture = ExtResource("8_vrp7v")
+
+[node name="Parallax2D4" type="Parallax2D" parent="ParallaxBackground"]
+z_index = -1
+z_as_relative = false
+scale = Vector2(1.5, 1.5)
+scroll_scale = Vector2(0.8, 0.8)
+repeat_size = Vector2(960, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D4"]
+texture_filter = 1
+texture = ExtResource("9_7ugdn")
+
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
+texture_filter = 1
 position = Vector2(-4, 0)
-tile_set = SubResource("TileSet_xfk1u")
+tile_set = ExtResource("6_4xq44")
 
 [node name="Player" parent="." instance=ExtResource("3_fvyxj")]
 position = Vector2(86, -1)
