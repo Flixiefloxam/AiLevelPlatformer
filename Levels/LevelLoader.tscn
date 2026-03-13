@@ -22,7 +22,7 @@ z_as_relative = false
 scale = Vector2(1.5, 1.5)
 scroll_scale = Vector2(0.1, 0.1)
 scroll_offset = Vector2(0, 43)
-repeat_size = Vector2(960, 0)
+repeat_size = Vector2(960, 480)
 repeat_times = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D1"]
@@ -35,7 +35,7 @@ z_as_relative = false
 scale = Vector2(1.5, 1.5)
 scroll_scale = Vector2(0.3, 0.3)
 scroll_offset = Vector2(0, 43)
-repeat_size = Vector2(960, 0)
+repeat_size = Vector2(960, 480)
 repeat_times = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D2"]
@@ -47,7 +47,7 @@ z_index = -1
 z_as_relative = false
 scale = Vector2(1.5, 1.5)
 scroll_scale = Vector2(0.6, 0.6)
-repeat_size = Vector2(960, 0)
+repeat_size = Vector2(960, 480)
 repeat_times = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D3"]
@@ -59,7 +59,7 @@ z_index = -1
 z_as_relative = false
 scale = Vector2(1.5, 1.5)
 scroll_scale = Vector2(0.8, 0.8)
-repeat_size = Vector2(960, 0)
+repeat_size = Vector2(960, 480)
 repeat_times = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/Parallax2D4"]

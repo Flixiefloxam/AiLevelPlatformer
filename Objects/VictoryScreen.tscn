@@ -35,8 +35,8 @@ shadow_color = Color(0, 0, 0, 0.329412)
 shadow_size = 5
 shadow_offset = Vector2(0, 3.5)
 
-[sub_resource type="Animation" id="Animation_2hj17"]
-resource_name = "Show"
+[sub_resource type="Animation" id="Animation_doydr"]
+length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -44,10 +44,10 @@ tracks/0/path = NodePath("VBoxContainer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(444, -615), Vector2(443.5, 278)]
+"values": [Vector2(443.5, 278)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -62,8 +62,8 @@ tracks/1/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_doydr"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_2hj17"]
+resource_name = "Show"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -71,10 +71,10 @@ tracks/0/path = NodePath("VBoxContainer:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(443.5, 278)]
+"values": [Vector2(444, -615), Vector2(443.5, 278)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
