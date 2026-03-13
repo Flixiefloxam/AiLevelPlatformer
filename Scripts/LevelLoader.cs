@@ -16,6 +16,7 @@ public partial class LevelLoader : Node2D
     private Rect2 tileMapBounds;
     private Camera2D playerCamera;
     private Camera2D sceneCamera;
+    private VictoryScreen victoryScreen;
     private Dictionary<char, int> tileMapping = new()
 	{
 		{ 'X', 0 }, // Solid tile
@@ -36,6 +37,7 @@ public partial class LevelLoader : Node2D
         playerController.LevelLoader = this; // Set the LevelLoader reference in PlayerController
         playerCamera = player.GetNode<Camera2D>("Camera2D");
         sceneCamera = GetNode<Camera2D>("SceneCamera");
+        victoryScreen = GetNode<VictoryScreen>("VictoryScreen");
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -151,6 +153,11 @@ public partial class LevelLoader : Node2D
                 playerPos.X < expandedBounds.Position.X ||
                 playerPos.X > expandedBounds.End.X ||
                 playerPos.Y > expandedBounds.End.Y; // Allow the player to go above the top of the level for things like jumping, but not below the bottom or beyond the sides.
+
+            if (playerPos.X > expandedBounds.End.X)
+            {
+                victoryScreen.ShowVictoryScreen();
+            }
 
             return isOutOfBounds;
         }

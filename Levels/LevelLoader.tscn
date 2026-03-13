@@ -1,12 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://c564oyrwpw040"]
+[gd_scene load_steps=10 format=3 uid="uid://c564oyrwpw040"]
 
 [ext_resource type="Script" uid="uid://cxq8sckce5ydh" path="res://Scripts/LevelLoader.cs" id="1_y5otw"]
 [ext_resource type="PackedScene" uid="uid://ciiic2uvdpc71" path="res://Objects/Player.tscn" id="3_fvyxj"]
 [ext_resource type="PackedScene" uid="uid://c7b13q3n3oea1" path="res://Objects/PauseMenu.tscn" id="4_sc368"]
 [ext_resource type="Texture2D" uid="uid://b2l85ce74lwg0" path="res://Assets/Images/BackgroundImages/background1.png" id="6_2aaox"]
-[ext_resource type="TileSet" uid="uid://dxh1ar130rpg" path="res://Assets/TileSets/CaveTileSet.tres" id="6_4xq44"]
+[ext_resource type="TileSet" uid="uid://dfpryap1s504h" path="res://Assets/TileSets/BlackTileSet.tres" id="6_4xq44"]
 [ext_resource type="Texture2D" uid="uid://navssfpgj7b" path="res://Assets/Images/BackgroundImages/background2.png" id="7_csutv"]
 [ext_resource type="Texture2D" uid="uid://dvvv2w32ro20l" path="res://Assets/Images/BackgroundImages/background3.png" id="8_vrp7v"]
+[ext_resource type="PackedScene" uid="uid://tjaaf6yftk3a" path="res://Objects/VictoryScreen.tscn" id="9_2aaox"]
 [ext_resource type="Texture2D" uid="uid://7smklpjxrkbi" path="res://Assets/Images/BackgroundImages/background4a.png" id="9_7ugdn"]
 
 [node name="LevelLoader" type="Node2D"]
@@ -74,5 +75,8 @@ tile_set = ExtResource("6_4xq44")
 position = Vector2(86, -1)
 
 [node name="PauseMenu" parent="." instance=ExtResource("4_sc368")]
+visible = false
 
 [node name="SceneCamera" type="Camera2D" parent="."]
+
+[node name="VictoryScreen" parent="." instance=ExtResource("9_2aaox")]
