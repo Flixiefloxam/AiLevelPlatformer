@@ -21,6 +21,7 @@ public partial class LevelSelectMenu : Control
     private bool isLoadingLevel; // Flag to prevent multiple level loads at the same time
     private List<string> levelFiles; // List to store the level files in the training levels directory
     private List<string> aiFiles; // List to store the AI generator files in the AI generators directory
+    private CommandLine commandLine; // Reference to the CommandLine node for logging purposes
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -35,6 +36,7 @@ public partial class LevelSelectMenu : Control
         SceneChanger = GetNode<SceneChanger>("/root/SceneChanger");
         levelFiles = new List<string>(); // Initialize the list to store level files
         aiFiles = new List<string>(); // Initialize the list to store AI generator files
+        commandLine = GetNode<CommandLine>("/root/CommandLine"); // Get the CommandLine node for logging
 
         // Initialize menu visibility and positions
         startMenu.Visible = true;
@@ -128,14 +130,14 @@ public partial class LevelSelectMenu : Control
         }
     }
 
-    private static List<string> GetFilesInDir(string dirPath)
+    private List<string> GetFilesInDir(string dirPath)
     {
         DirAccess dir = DirAccess.Open(dirPath);
 
         // Check if the directory exists and can be opened
         if (dir == null)
         {
-            GD.PrintErr($"Level directory not found or cannot be opened at: {dirPath}");
+            commandLine.LogError($"Level directory not found or cannot be opened at: {dirPath}");
             return new List<string>();
         }
 

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using System.Linq;
 
 public partial class LevelLoader : Node2D
 {
@@ -17,6 +18,7 @@ public partial class LevelLoader : Node2D
     private Camera2D playerCamera;
     private Camera2D sceneCamera;
     private VictoryScreen victoryScreen;
+    private CommandLine commandLine; // Reference to the CommandLine node for logging purposes
     private Dictionary<char, int> tileMapping = new()
 	{
 		{ 'X', 0 }, // Solid tile
@@ -38,6 +40,7 @@ public partial class LevelLoader : Node2D
         playerCamera = player.GetNode<Camera2D>("Camera2D");
         sceneCamera = GetNode<Camera2D>("SceneCamera");
         victoryScreen = GetNode<VictoryScreen>("VictoryScreen");
+        commandLine = GetNode<CommandLine>("/root/CommandLine"); // Get the CommandLine node for logging
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -46,7 +49,7 @@ public partial class LevelLoader : Node2D
         // Check if the player is out of bounds and respawn if necessary
         if (IsPlayerOutOfBounds())
         {
-            GD.Print($"Player out of bounds: {player.GlobalPosition}. Respawning...");
+            commandLine.Log($"Player out of bounds: {player.GlobalPosition}. Respawning...");
             playerController.Respawn();
         }
     }
@@ -56,15 +59,22 @@ public partial class LevelLoader : Node2D
 		using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
 		if (file == null)
 		{
-			GD.PrintErr("Failed to open level file: " + path);
-			return;
+            commandLine.LogError("Failed to open level file: " + path);
+            return;
         }
         levelLoaded = true; // Set the flag to true when the level is loaded
-        GD.Print("Loading level from file: " + path);
+        commandLine.Log("Loading level from file: " + path);
 
         var lines = new List<string>();
 		while (!file.EofReached())
 			lines.Add(file.GetLine());
+
+        // Level stats logging
+        int totalTiles = lines.Sum(line => line.Length);
+        int solidTiles = lines.Sum(line => line.Count(c => tileMapping.ContainsKey(c) && tileMapping[c] == 0));
+
+        commandLine.Log("Level stats:");
+        commandLine.Log($"Tile density(%): {(solidTiles/totalTiles)*100}%");
 
         tileMapLayer.Clear(); // Clear existing tiles
         for (int y = 0; y < lines.Count; y++)
@@ -81,7 +91,7 @@ public partial class LevelLoader : Node2D
                 {
                     // Set the player's position to the spawn point
                     playerSpawnPoint = new Vector2(x * tileMapLayer.TileSet.TileSize.X, y * tileMapLayer.TileSet.TileSize.Y);
-                    GD.Print("Player spawn point set at: " + playerSpawnPoint);
+                    commandLine.Log("Player spawn point set at: " + playerSpawnPoint);
                     playerController.Respawn(true);
                 }
             }
@@ -180,7 +190,7 @@ public partial class LevelLoader : Node2D
 	{
         if (!levelLoaded)
         {
-            GD.PrintErr("LevelLoader scene not loaded correctly through SceneChanger or failed to find level.");
+            commandLine.LogError("LevelLoader scene not loaded correctly through SceneChanger or failed to find level.");
         }
     }
 }

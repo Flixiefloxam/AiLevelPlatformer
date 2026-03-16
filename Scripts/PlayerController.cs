@@ -109,7 +109,7 @@ public partial class PlayerController : CharacterBody2D
     {
         if (LevelLoader != null)
         {
-            GD.Print("Respawning player at spawn point: " + LevelLoader.playerSpawnPoint);
+            commandLine.Log("Respawning player at spawn point: " + LevelLoader.playerSpawnPoint);
             GlobalPosition = LevelLoader.playerSpawnPoint;
             Velocity = Vector2.Zero;
             //timeSinceLastOnFloor = 0.0f;
@@ -117,7 +117,7 @@ public partial class PlayerController : CharacterBody2D
         }
         else
         {
-            GD.PrintErr("LevelLoader is not set in PlayerController. Cannot respawn.");
+            commandLine.Log("LevelLoader is not set in PlayerController. Cannot respawn.");
         }
     }
 

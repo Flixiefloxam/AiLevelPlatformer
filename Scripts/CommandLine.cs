@@ -6,6 +6,7 @@ public partial class CommandLine : CanvasLayer
 {
     private SceneChanger sceneChanger; // Reference to the SceneChanger node
     private LineEdit cmdLine; // Input field for the command line
+    private RichTextLabel outputLabel; // Label to display godot output
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -13,6 +14,25 @@ public partial class CommandLine : CanvasLayer
 		Visible = false; // Hide the command line by default
         sceneChanger = GetNode<SceneChanger>("/root/SceneChanger"); // Get the SceneChanger node from the root
         cmdLine = GetNode<LineEdit>("CommandLineInput"); // Get the LineEdit node for command input
+        outputLabel = GetNode<RichTextLabel>("PanelContainer/OutputLabel"); // Get the RichTextLabel node for output display
+    }
+
+    public void Log(string message)
+    {
+        GD.Print(message);
+        outputLabel.AppendText(message + "\n");
+    }
+
+    public void LogWarning(string message)
+    {
+        GD.PushWarning(message);
+        outputLabel.AppendText("[color=yellow]" + message + "[/color]\n");
+    }
+
+    public void LogError(string message)
+    {
+        GD.PushError(message);
+        outputLabel.AppendText("[color=red]" + message + "[/color]\n");
     }
 
     // Called every time an input event is received.
@@ -43,6 +63,15 @@ public partial class CommandLine : CanvasLayer
         bool correctCommand = true;
         switch (words[0])
         {
+            case "clear":
+                outputLabel.Clear(); // Clear the output label
+                break;
+            case "print":// Test command to print a message to the output label
+                if (words.Length == 2)
+                {
+                    Log(words[1]);
+                }
+                break;
             case "load":
                 if (words.Length == 2)
                 {

@@ -15,11 +15,13 @@ public partial class SceneChanger : CanvasLayer
 	private AnimationPlayer animationPlayer;
 	private Stack<string> sceneHistory = new Stack<string>(); // Stack to keep track of scene history. Does not include current scene.
     private TaskCompletionSource<bool> sceneChanged;
+    private CommandLine commandLine; // Reference to the CommandLine node for logging purposes
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
 		animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        commandLine = GetNode<CommandLine>("/root/CommandLine");
     }
 
     public async void LoadLevelFromFile(string path)
@@ -33,7 +35,7 @@ public partial class SceneChanger : CanvasLayer
         }
         else
         {
-            GD.PrintErr("Level file does not exist or is not a valid .txt file: " + path);
+            commandLine.LogError("Level file does not exist or is not a valid .txt file: " + path);
         }
     }
 
@@ -69,7 +71,7 @@ public partial class SceneChanger : CanvasLayer
 
             if (process.ExitCode != 0)
             {
-                GD.PrintErr($"Error generating level with {path}: {stderr}");
+                commandLine.LogError($"Error generating level with {path}: {stderr}");
                 return;
             }
 
@@ -83,17 +85,17 @@ public partial class SceneChanger : CanvasLayer
 
         
 
-        GD.Print($"Level generated successfully with {path}. Output: {stdout}");
+        commandLine.Log($"Level generated successfully with {path}. Output: {stdout}");
 
         LoadLevelFromFile(GeneratedLevelPath);
     }
 
-    private static bool ValidLevelStructure(string path)
+    private bool ValidLevelStructure(string path)
     {
         using var file = Godot.FileAccess.Open(path, Godot.FileAccess.ModeFlags.Read);
         if (file == null)
         {
-            GD.PrintErr("Failed to open level file: " + path);
+            commandLine.LogError("Failed to open level file: " + path);
             return false;
         }
 
@@ -104,7 +106,7 @@ public partial class SceneChanger : CanvasLayer
         // Structure Validation
         if (!lines.Contains("a"))
         {
-            GD.PrintErr("No spawn point found");
+            commandLine.LogError("No spawn point found");
         }
         else
         {
@@ -127,7 +129,7 @@ public partial class SceneChanger : CanvasLayer
                     }
                 }
             }
-            GD.PrintErr("No valid spawn point found (must have a solid tile below it)");
+            commandLine.LogError("No valid spawn point found (must have a solid tile below it)");
         }
 
 
@@ -146,7 +148,7 @@ public partial class SceneChanger : CanvasLayer
     {
         if (!ResourceLoader.Exists(scenePath) && scenePath.EndsWith(".tscn"))
         {
-            GD.PrintErr("Scene does not exist: " + scenePath);
+            commandLine.LogError("Scene does not exist: " + scenePath);
             return false;
         }
 
@@ -157,7 +159,7 @@ public partial class SceneChanger : CanvasLayer
             sceneHistory.Push(GetTree().CurrentScene.SceneFilePath); // Push the current scene onto the stack
         }
         newScenePath = scenePath;
-        GD.Print("Changing scene to: " + Path.GetFileNameWithoutExtension(newScenePath));
+        commandLine.Log("Changing scene to: " + Path.GetFileNameWithoutExtension(newScenePath));
 
         if (animationPlayer.IsPlaying())
         {
@@ -176,7 +178,7 @@ public partial class SceneChanger : CanvasLayer
         }
         else
         {
-            GD.Print("No previous scene in history. Returning to main menu.");
+            commandLine.Log("No previous scene in history. Returning to main menu.");
             ChangeScene("res://Levels/Menus/MainMenu.tscn", false); // Default back to main menu if no history
         }
     }
