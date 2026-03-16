@@ -19,6 +19,7 @@ public partial class LevelLoader : Node2D
     private Camera2D sceneCamera;
     private VictoryScreen victoryScreen;
     private CommandLine commandLine; // Reference to the CommandLine node for logging purposes
+    private bool victoryScreenShown = false; // Flag to ensure the victory screen is only shown once
     private Dictionary<char, int> tileMapping = new()
 	{
 		{ 'X', 0 }, // Solid tile
@@ -164,8 +165,9 @@ public partial class LevelLoader : Node2D
                 playerPos.X > expandedBounds.End.X ||
                 playerPos.Y > expandedBounds.End.Y; // Allow the player to go above the top of the level for things like jumping, but not below the bottom or beyond the sides.
 
-            if (playerPos.X > expandedBounds.End.X)
+            if (playerPos.X > expandedBounds.End.X && !victoryScreenShown)
             {
+                victoryScreenShown = true; // Set the flag to true to prevent showing the victory screen multiple times
                 victoryScreen.ShowVictoryScreen();
             }
 
