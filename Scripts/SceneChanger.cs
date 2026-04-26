@@ -9,7 +9,7 @@ public partial class SceneChanger : CanvasLayer
 {
     private const string levelLoadScenePath = "res://Levels/LevelLoader.tscn"; // The path to the LevelLoader scene
     private const string GeneratedLevelPath = "res://Levels/GeneratedLevels/GeneratedLevel.txt"; // The path to the generated level file
-    private const int MaxLevelGenerationAttempts = 10; // Maximum number of attempts to generate a valid level
+    private const int MaxLevelGenerationAttempts = 5; // Maximum number of attempts to generate a valid level
 
     private string newScenePath;
 	private AnimationPlayer animationPlayer;
@@ -79,7 +79,11 @@ public partial class SceneChanger : CanvasLayer
             {
                 validLevel = true;
             }
-            failedAttempts++;
+            else
+            {
+                failedAttempts++;
+                commandLine.LogWarning($"Generated level is invalid. Attempt {failedAttempts} of {MaxLevelGenerationAttempts}. Retrying...");
+            }
         }
         while (!validLevel && failedAttempts < MaxLevelGenerationAttempts);
 
@@ -133,8 +137,7 @@ public partial class SceneChanger : CanvasLayer
         }
 
 
-        //return false;
-        return true; // this is here to temporarily bypass the level structure validation while testing level generation.
+        return false;
     }
 
     // Wrapper function to change the scene with history tracking enabled.

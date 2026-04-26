@@ -71,10 +71,12 @@ public partial class LevelLoader : Node2D
 			lines.Add(file.GetLine());
 
         // Level stats logging
-        int totalTiles = lines.Sum(line => line.Length);
-        int solidTiles = lines.Sum(line => line.Count(c => tileMapping.ContainsKey(c) && tileMapping[c] == 0));
+        float totalTiles = lines.Sum(line => line.Length);
+        float solidTiles = lines.Sum(line => line.Count(c => tileMapping.ContainsKey(c) && tileMapping[c] == 0));
 
         commandLine.Log("Level stats:");
+        commandLine.Log($"Total tiles: {totalTiles}");
+        commandLine.Log($"Solid tiles: {solidTiles}");
         commandLine.Log($"Tile density(%): {(solidTiles/totalTiles)*100}%");
 
         tileMapLayer.Clear(); // Clear existing tiles
