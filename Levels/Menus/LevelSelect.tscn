@@ -564,7 +564,7 @@ offset_bottom = -297.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_7138c")
-text = "Which AI do you want to use?"
+text = "Which generation method do you want to use?"
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1
